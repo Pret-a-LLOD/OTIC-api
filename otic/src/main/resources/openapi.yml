@@ -1,0 +1,104 @@
+openapi: 3.0.1
+info:
+  title: One-Time Inverse Consultation (OTIC) API
+  description: 'This API allows to obtain translations from a source language into a target language by pivoting on a third language in the Apertium RDF graph. It is based on the method proposed by Tanaka and Umemura in 1994 [1], and adapted by Lin et. al 2011 [2]. References: [1] K. Tanaka and K. Umemura. "Construction of a bilingual dictionary intermediated by a third language". In COLING, pages 297–303, 1994. [2] L. T. Lim, B. Ranaivo-Malançon, and E. K. Tang. "Low cost construction of a multilingual lexicon from bilingual lists". Polibits, 43:45–51, 2011.'
+  license:
+    name: Apache 2.0
+    url: 'http://springdoc.org'
+  version: 1.0.0-oas3
+  x-port: 8080
+paths:
+  '/translation/{source}-{pivot}-{target}':
+    get:
+      tags:
+        - translation
+      description: 'Given a source, pivot, and target languages, returns an inferred dictionary in the form of a list of TranslatablePair instances'
+      operationId: inferredBilingualDictionary
+      parameters:
+        - name: source
+          in: path
+          required: true
+          schema:
+            type: string
+          example: en
+        - name: pivot
+          in: path
+          required: true
+          schema:
+            type: string
+          example: es
+        - name: target
+          in: path
+          required: true
+          schema:
+            type: string
+          example: fr
+      responses:
+        '200':
+          description: An array of TranslatablePair instances
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TranslatablePair'
+  '/translation/{source}-{pivot}-{target}/{entry}':
+    get:
+      tags:
+        - translation
+      description: 'Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language'
+      operationId: translationsFromEntry
+      parameters:
+        - name: source
+          in: path
+          required: true
+          schema:
+            type: string
+          example: en
+        - name: pivot
+          in: path
+          required: true
+          schema:
+            type: string
+          example: es
+        - name: target
+          in: path
+          required: true
+          schema:
+            type: string
+          example: fr
+        - name: entry
+          in: path
+          required: true
+          schema:
+            type: string
+          example: dog
+      responses:
+        '200':
+          description: An array of TranslatablePair instances
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TranslatablePair'
+components:
+  schemas:
+    TranslatablePair:
+      type: object
+      properties:
+        sourceLabel:
+          type: string
+        targetLabel:
+          type: string
+        score:
+          type: number
+          format: double
+        sourceLexicalEntry:
+          type: string
+        targetLexicalEntry:
+          type: string
+        fragmentPos:
+          type: string
+        pos:
+          type: string
