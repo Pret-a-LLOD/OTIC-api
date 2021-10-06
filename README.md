@@ -10,7 +10,7 @@ the source and target words.
 Currently, the **REST Api** has the following endpoints:
 
 1. `GET /translation/{source}-{pivot}-{target}/{entry}` , e.g. `/translation/en-es-fr/dog` Get an indirect translation from a given lexical entry by specifying the language codes of source, pivot and target languages, 
-2. `GET /translation/{source}-{pivot}-{target}`, e.g. `/translation/en-es-fr` Get a full bilingual dictionary generated from the execution of the algorithm with a given source, pivot and target languages. 
+2. `GET /translation/{source}-{pivot}-{target}`, e.g. `/translation/en-es-fr` Get a full bilingual dictionary generated from the execution of the algorithm with a given source, pivot and target languages. This process can take several hours to finish. 
 
 For more details, please check the Swagger documentation at the path `/swagger-ui.html.` 
 
