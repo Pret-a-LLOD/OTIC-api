@@ -13,6 +13,8 @@ Currently, the **REST Api** has the following endpoints:
 2. `GET /translation/{source}-{pivot}-{target}`, e.g. `/translation/en-es-fr` Get a full bilingual dictionary generated from the execution of the algorithm with a given source, pivot and target languages. This process can take several hours to finish. 
 
 For more details, please check the Swagger documentation at the path `/swagger-ui.html.` 
+Example Curl command for endpoint 1: `curl -X 'GET' 'http://localhost:8001/translation/en-es-fr/dog' -H 'accept: */* `
+
 
 The data on which OTIC Rest API relies to infer new translations is the new RDF version of the Apertium family of dictionaries [3] . 
 
