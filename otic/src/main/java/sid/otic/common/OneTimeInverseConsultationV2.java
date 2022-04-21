@@ -16,6 +16,15 @@ import org.apache.jena.query.ResultSet;
 public class OneTimeInverseConsultationV2 {
 
 	
+	public OneTimeInverseConsultationV2() {
+		
+	}
+	
+	// Constructor that includes a SPARQL Endpoint
+	public OneTimeInverseConsultationV2(String urlEndpoint) {
+		SPARQLSearchesV2.setSparqlEndpoint(urlEndpoint);
+	}
+	
 	/**
 	 *  Given a lexical entry (and its associated lemma) in a source language, it returns its possible translations into a target language through a given pivot language,
 	 * along with their score, in an array of TranslatablePair objects. The scores are obtained based on the "One Time Single Consultation" algorithm
@@ -69,6 +78,11 @@ public class OneTimeInverseConsultationV2 {
 					translationSetURI2));
 		return translatablePairs;
 	}
+	
+	
+	/* TODO this is the method to COPY AND MODIFY to allow processing OTIC not only thorugh an SPARQL endpoint but through a in memory structure 
+	 * !!!EN OBRAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 */
 	
 	/**
 	 * Given a lexical entry (and its associated lemma) in a source language, it returns its possible translations into a target language through a given pivot language,
