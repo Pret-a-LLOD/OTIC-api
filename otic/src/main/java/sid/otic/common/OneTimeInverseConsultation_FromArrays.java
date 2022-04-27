@@ -18,9 +18,16 @@ public class OneTimeInverseConsultation_FromArrays {
 	public void addDictInMemory(BasicDictInfo dict) {
 		
 	   this.storedDicts.add(dict);
+	   
+	   //TODO controlar si el diccionario ya existe
 		
 	}
 	
+	public int numStoredDicts() {
+		
+		return storedDicts.size();
+		
+	}
 	
 	/**
 	 * Given a lemma in a source language, it returns their possible translations into a target language through a given pivot language,
@@ -41,14 +48,24 @@ public class OneTimeInverseConsultation_FromArrays {
 		//Obtain in-memory dictionary from source and pivot languages, and from pivot and target languages 
 		BasicDictInfo dict1 = null, dict2 = null; 
 		
+		System.out.println("Looking for " + sourceLanguage +" - " + pivotLanguage + " and " +  pivotLanguage +" - " + targetLanguage + " dictionaries");
+		
 		for (BasicDictInfo dict: this.storedDicts) { 
 			
-			if ((dict.getSourceLang() == sourceLanguage) && (dict.getTargetLang() == pivotLanguage) ||
-				(dict.getTargetLang() == sourceLanguage) && (dict.getSourceLang() == pivotLanguage))	
-					dict1 = dict;
-			if ((dict.getSourceLang() == pivotLanguage) && (dict.getTargetLang() == targetLanguage) ||
-				(dict.getTargetLang() == pivotLanguage) && (dict.getSourceLang() == targetLanguage))	
-					dict2 = dict;
+			System.out.println("[In-memory dict] " + dict.getSourceLang() + "-" + dict.getTargetLang());  
+			
+			if ( (dict.getSourceLang().equals(sourceLanguage) && dict.getTargetLang().equals(pivotLanguage)) ||
+				 (dict.getTargetLang().equals(sourceLanguage) && dict.getSourceLang().equals(pivotLanguage)) ) {
+				dict1 = dict;
+				System.out.println("source-pivot dictionary found");
+			}
+				
+			if ( (dict.getSourceLang().equals(pivotLanguage) && dict.getTargetLang().equals(targetLanguage)) ||
+				 (dict.getTargetLang().equals(pivotLanguage) && dict.getSourceLang().equals(targetLanguage)) )	{
+				dict2 = dict;
+				System.out.println("source-pivot dictionary found");
+			}
+					
 		}
 		if ((dict1 == null) || (dict2 == null)) 
 			System.out.println("Dictionaries not found in list of in-memory dictionaries");
@@ -56,12 +73,16 @@ public class OneTimeInverseConsultation_FromArrays {
 		
 		// Get Lexical entries associated to source label
 		ArrayList<String> sourceLexicalEntries = null;
-		if (sourceLanguage == dict1.getSourceLang())  // e.g., EN in an EN-ES dictionary
+		
+		System.out.println("source lag (parameter). = " + sourceLanguage + "source language (dict):" + dict1.getSourceLang());
+		System.out.println("source lag (parameter). = " + sourceLanguage + "target language (dict):" + dict1.getTargetLang());
+		
+		if (sourceLanguage.equals(dict1.getSourceLang()))  // e.g., EN in an EN-ES dictionary
 			sourceLexicalEntries = dict1.getHashSourceLemmaInfo().get(sourceLemma);
-		else if (sourceLanguage == dict1.getTargetLang()) // e.g., ES in an EN-ES dictionary
+		else if (sourceLanguage.equals(dict1.getTargetLang())) // e.g., ES in an EN-ES dictionary
 			sourceLexicalEntries = dict1.getHashTargetLemmaInfo().get(sourceLemma);
 			
-			
+		System.out.println("source lexical entries (ID object):" + sourceLexicalEntries);
 		
 		//ArrayList<String> sourceLexicalEntries = SPARQLSearchesV2.obtainLexicalEntriesFromLemma(sourceLexicon, sourceLemma, sourceLanguage);		
 		
@@ -71,8 +92,6 @@ public class OneTimeInverseConsultation_FromArrays {
 					dict1, 
 					dict2));
 	
-		
-				
 		for (String sourceLexicalEntry:sourceLexicalEntries)
 			translatablePairs.addAll(obtainTranslationScoresFromLexicalEntry(sourceLemma, 
 					sourceLexicalEntry, 

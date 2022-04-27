@@ -15,8 +15,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import sid.otic.common.OneTimeInverseConsultationV2;
-import sid.otic.common.TranslatablePair;
 //import otic.tutorial.controller.UrlEndpoint;
 //import otic.tutorial.common.OneTimeInverseConsultationV2;
 //import otic.tutorial.common.TranslatablePair;
@@ -32,7 +30,7 @@ import java.util.ArrayList;
 @Tag(name = "translation")
 public class TranslationController {
 	
-	//static OneTimeInverseConsultation_FromArrays otic = new OneTimeInverseConsultation_FromArrays();
+	static OneTimeInverseConsultation_FromArrays otic = new OneTimeInverseConsultation_FromArrays();
 	
 	@Operation(description = "Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language")
 	@ApiResponses(value = {
@@ -75,19 +73,30 @@ public class TranslationController {
 				//@Parameter(example = "es") @PathVariable (value = "pivot") String pivot, 
 				@Parameter(example = "es") @PathVariable (value = "target") String target, 
 				//@Parameter(example = "dict") @PathVariable(value = "dict") String dict
-				@RequestBody UrlEndpoint urlEndpoint 
+				@RequestBody String dict 
 				){
 	
-			System.out.println("I am here!");
-	//		ArrayList<TranslationPair> tps = PreprocessInputData.parseStringIntoTranslationPairs(dict, source, target);
-	//		BasicDictInfo bd = new BasicDictInfo(tps, source, target);
-	//		otic.addDictInMemory(bd);
-		
+		System.out.println("Starting uploadDict..." );
+		System.out.println("Num of stored dicts: " + otic.numStoredDicts());
+			
+			ArrayList<TranslationPair> tps = PreprocessInputData.parseStringIntoTranslationPairs(dict, source, target);
+			
+			System.out.println("check content of dictionary");
+			for (TranslationPair tp : tps) {
+				tp.print();
+			}
+			
+			BasicDictInfo bd = new BasicDictInfo(tps, source, target);
+			otic.addDictInMemory(bd);
+			
+
+		System.out.println("Num of stored dicts: " + otic.numStoredDicts());
+			
 			return "finished";
 	}
 
 	
-/*	@Operation(description = "Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language. This call will use the dictionaries stored in memory")
+	@Operation(description = "Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language. This call will use the dictionaries stored in memory")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "An array of TranslatablePair instances") })
 	@RequestMapping(path = "/translationFromMem/{source}-{pivot}-{target}/{entry}", method = RequestMethod.GET)
@@ -95,15 +104,17 @@ public class TranslationController {
 			@Parameter(example = "en") @PathVariable(value = "source") String source,
 			@Parameter(example = "es") @PathVariable (value = "pivot") String pivot, 
 			@Parameter(example = "fr") @PathVariable (value = "target") String target, 
-			@Parameter(example = "dog") @PathVariable(value = "entry") String entry) {
+			@Parameter(example = "book") @PathVariable(value = "entry") String entry) {
 		
+		System.out.println("Starting translationFromMem..." );
+		System.out.println("Num of stored dicts: " + otic.numStoredDicts());
 		
 		ArrayList<TranslatablePair> translatablePairs = otic.obtainTranslationScoresFromLemma(entry, source, pivot, target);
 		
 		return translatablePairs;
 	}
 		
-*/
+
 	
 	//igual pero con POST
 	@Operation(description = "Given a source, pivot, and target languages, and an SPARQL Endpoint returns a list of inferred TranslatablePair instances for the given entry in the source language")
@@ -127,7 +138,7 @@ public class TranslationController {
 	
 	
 	// extra class to allow JSON based communication (Springboot does the magic)
-	class UrlEndpoint{
+	static class UrlEndpoint{
 		public String urlEndpoint ;
 			
 		public String getUrlEndpoint() {
