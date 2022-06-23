@@ -28,7 +28,7 @@ public class BasicDictInfo {
 	private HashMap <String, ArrayList<String>> hashTargetLemmaInfo; // associates a target lemma with its associated list of lexical entry URIs
 	
 	// constructor
-	BasicDictInfo (ArrayList<TranslationPair> tps, String sourceLang, String targetLang){
+	public BasicDictInfo (ArrayList<TranslationPair> tps, String sourceLang, String targetLang){
 		
 		this.hashLexicalEntriesInfo =  loadHashLexicalEntriesInfo(tps);
 		this.sourceLang = sourceLang;
