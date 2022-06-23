@@ -25,10 +25,10 @@ public class BasicDictInfo {
 	private String targetLang;
 	private HashMap <String, LexicalEntryInfo> hashLexicalEntriesInfo; // associates a lexical entry its lemma, POS and translated lexical entry
 	private HashMap <String, ArrayList<String>> hashSourceLemmaInfo; // associates a source lemma with its associated list of lexical entry URIs
-	private HashMap <String, ArrayList<String>> hashTargetLemmaInfo; // associates a source lemma with its associated list of lexical entry URIs
+	private HashMap <String, ArrayList<String>> hashTargetLemmaInfo; // associates a target lemma with its associated list of lexical entry URIs
 	
 	// constructor
-	public BasicDictInfo (ArrayList<TranslationPair> tps, String sourceLang, String targetLang){
+	BasicDictInfo (ArrayList<TranslationPair> tps, String sourceLang, String targetLang){
 		
 		this.hashLexicalEntriesInfo =  loadHashLexicalEntriesInfo(tps);
 		this.sourceLang = sourceLang;
@@ -60,10 +60,12 @@ public class BasicDictInfo {
 				hashLexicalEntriesInfo.put(lexicalEntry, leInfo);
 			}
 			else {
-				// if it exists, we update the list of translations
-				hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().add(tp.getTargetLexicaEntry().toString());
+				// if it exists, we update the list of translations, avoiding duplicates (UPDATED 23/6/22)
+				if (!hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().contains(tp.getTargetLexicaEntry().toString()))
+					hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().add(tp.getTargetLexicaEntry().toString());
 			}
 		}
+		
 		
 		//Store target lexical entries 
 		for (TranslationPair tp: tplist) {			
@@ -77,8 +79,9 @@ public class BasicDictInfo {
 				hashLexicalEntriesInfo.put(lexicalEntry, leInfo);
 			}
 			else {
-				// if it exists, we update the list of translations
-				hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().add(tp.getSourceLexicaEntry().toString());
+				// if it exists, we update the list of translations, avoiding duplicates (UPDATED 23/6/22)
+				if (!hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().contains(tp.getSourceLexicaEntry().toString()))
+					hashLexicalEntriesInfo.get(lexicalEntry).getTranslatedLexicalEntries().add(tp.getSourceLexicaEntry().toString());
 			}
 		}
 		
@@ -100,8 +103,10 @@ public class BasicDictInfo {
 				hashLemmaInfo.put(lemma, lexicalEntries);
 			}
 			else {
-				// if it exists, we update the list of lexical entries
-				hashLemmaInfo.get(lemma).add(tp.getSourceLexicaEntry().toString());
+				// if it exists, we update the list of lexical entries, avoiding duplicates (UPDATED 23/6/22)
+				if (!hashLemmaInfo.get(lemma).contains(tp.getSourceLexicaEntry().toString())) 
+					hashLemmaInfo.get(lemma).add(tp.getSourceLexicaEntry().toString());
+				
 			}
 		}	
 		 
@@ -124,8 +129,9 @@ public class BasicDictInfo {
 				hashLemmaInfo.put(lemma, lexicalEntries);
 			}
 			else {
-				// if it exists, we update the list of lexical entries
-				hashLemmaInfo.get(lemma).add(tp.getSourceLexicaEntry().toString());
+				// if it exists, we update the list of lexical entries, avoiding duplicates (UPDATED 23/6/22)
+				if (!hashLemmaInfo.get(lemma).contains(tp.getTargetLexicaEntry().toString()))
+					hashLemmaInfo.get(lemma).add(tp.getTargetLexicaEntry().toString());
 			}
 		}	
 		 

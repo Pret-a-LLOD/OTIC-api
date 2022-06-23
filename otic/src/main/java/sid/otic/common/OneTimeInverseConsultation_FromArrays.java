@@ -19,9 +19,10 @@ public class OneTimeInverseConsultation_FromArrays {
 		
 	   this.storedDicts.add(dict);
 	   
-	   //TODO controlar si el diccionario ya existe
-		
+	   //TODO check whether the dictionary already exists in memory (after deciding whether this is really needed)
+			
 	}
+	
 	
 	public int numStoredDicts() {
 		
@@ -70,33 +71,22 @@ public class OneTimeInverseConsultation_FromArrays {
 		if ((dict1 == null) || (dict2 == null)) 
 			System.out.println("Dictionaries not found in list of in-memory dictionaries");
 		
+		else {
 		
-		// Get Lexical entries associated to source label
-		ArrayList<String> sourceLexicalEntries = null;
-		
-		System.out.println("source lag (parameter). = " + sourceLanguage + "source language (dict):" + dict1.getSourceLang());
-		System.out.println("source lag (parameter). = " + sourceLanguage + "target language (dict):" + dict1.getTargetLang());
-		
-		if (sourceLanguage.equals(dict1.getSourceLang()))  // e.g., EN in an EN-ES dictionary
-			sourceLexicalEntries = dict1.getHashSourceLemmaInfo().get(sourceLemma);
-		else if (sourceLanguage.equals(dict1.getTargetLang())) // e.g., ES in an EN-ES dictionary
-			sourceLexicalEntries = dict1.getHashTargetLemmaInfo().get(sourceLemma);
-			
-		System.out.println("source lexical entries (ID object):" + sourceLexicalEntries);
-		
-		//ArrayList<String> sourceLexicalEntries = SPARQLSearchesV2.obtainLexicalEntriesFromLemma(sourceLexicon, sourceLemma, sourceLanguage);		
-		
-		for (String sourceLexicalEntry:sourceLexicalEntries)
-			translatablePairs.addAll(obtainTranslationScoresFromLexicalEntry(sourceLemma, 
-					sourceLexicalEntry, 
-					dict1, 
-					dict2));
-	
-		for (String sourceLexicalEntry:sourceLexicalEntries)
-			translatablePairs.addAll(obtainTranslationScoresFromLexicalEntry(sourceLemma, 
-					sourceLexicalEntry, 
-					dict1, 
-					dict2));
+			// Get Lexical entries associated to source label
+			ArrayList<String> sourceLexicalEntries = null;
+			if (sourceLanguage.equals(dict1.getSourceLang()))  // e.g., EN in an EN-ES dictionary
+				sourceLexicalEntries = dict1.getHashSourceLemmaInfo().get(sourceLemma);
+			else if (sourceLanguage.equals(dict1.getTargetLang())) // e.g., ES in an EN-ES dictionary
+				sourceLexicalEntries = dict1.getHashTargetLemmaInfo().get(sourceLemma);
+				
+			for (String sourceLexicalEntry:sourceLexicalEntries)
+				translatablePairs.addAll(obtainTranslationScoresFromLexicalEntry(sourceLemma, 
+						sourceLexicalEntry, 
+						dict1, 
+						dict2));
+
+		}
 		return translatablePairs;
 	}
 	
@@ -124,16 +114,19 @@ public class OneTimeInverseConsultation_FromArrays {
 		
 		// 1. For the source lexical entry, look up all translations in the pivot language (P1).			
 		//get translations (lexical entries) for the source lexical entry
-		ArrayList<String> pivotTranslations = dictSourceToPivot.getHashLexicalEntriesInfo ().get(sourceLexicalEntry).getTranslatedLexicalEntries();
+		ArrayList<String> pivotTranslations = dictSourceToPivot.getHashLexicalEntriesInfo().get(sourceLexicalEntry).getTranslatedLexicalEntries();
 		
 		//populate set of pivot translations (P1)
 		P1.addAll(pivotTranslations);
 
 		// 2. For every pivot translation of every source lexical entry, look up its target translations (T).
-		for (String pivotTranslation: pivotTranslations){			
+		for (String pivotTranslation: pivotTranslations){
+		//for (String pivotTranslation: P1){			
 			
 			ArrayList<String> newTargetTranslations = dictPivotToTarget.getHashLexicalEntriesInfo().get(pivotTranslation).getTranslatedLexicalEntries();
 		
+			
+			
 			newTargetTranslations.removeAll(T); //retains only those translations that are really new ones			
 	
 			//Create the array of translatable pairs leaving the scores empty for the moment
@@ -199,8 +192,8 @@ public class OneTimeInverseConsultation_FromArrays {
 		
 		// get the input string from a test file
 		try {
-			input1 = new String(Files.readAllBytes(Paths.get("data/test_EN-ES.tsv")));
-			input2 = new String(Files.readAllBytes(Paths.get("data/test_FR-ES.tsv")));
+			input1 = new String(Files.readAllBytes(Paths.get("data/test_FR-ES.tsv")));
+			input2 = new String(Files.readAllBytes(Paths.get("data/test_EN-ES.tsv")));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -208,16 +201,16 @@ public class OneTimeInverseConsultation_FromArrays {
 		}
 		
 			
-		ArrayList<TranslationPair> tps1 = PreprocessInputData.parseStringIntoTranslationPairs(input1, "en", "es");
-		ArrayList<TranslationPair> tps2 = PreprocessInputData.parseStringIntoTranslationPairs(input2, "fr", "es");
+		ArrayList<TranslationPair> tps1 = PreprocessInputData.parseStringIntoTranslationPairs(input1, "fr", "es");
+		ArrayList<TranslationPair> tps2 = PreprocessInputData.parseStringIntoTranslationPairs(input2, "en", "es");
 		
-		BasicDictInfo bd1 = new BasicDictInfo(tps1, "en", "es");
+		BasicDictInfo bd1 = new BasicDictInfo(tps1, "fr", "es");
 		otic.addDictInMemory(bd1);
 		
-		BasicDictInfo bd2 = new BasicDictInfo(tps2, "fr", "es");
+		BasicDictInfo bd2 = new BasicDictInfo(tps2, "en", "es");
 		otic.addDictInMemory(bd2);
 		
-		ArrayList<TranslatablePair> translatablePairs = otic.obtainTranslationScoresFromLemma("book", "en", "es", "fr");
+		ArrayList<TranslatablePair> translatablePairs = otic.obtainTranslationScoresFromLemma("livre", "fr", "es", "en");
 		for (TranslatablePair tp : translatablePairs) {
 			tp.print();
 		}
