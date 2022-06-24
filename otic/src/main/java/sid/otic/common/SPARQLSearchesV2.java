@@ -33,12 +33,12 @@ public class SPARQLSearchesV2 {
 			"PREFIX lime: <http://www.w3.org/ns/lemon/lime#>" + 
 			"SELECT DISTINCT ?transSet" + 
 			"\nWHERE {" + 
-			"GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
-			"	{" + 
+//			"GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
+//			"	{" + 
 			"	?transSet a vartrans:TranslationSet ; \n" + 
 			"			  lime:language \"" + sourceLanguage + "\" ;" + 
 			"			  lime:language \"" + targetLanguage + "\" ." +
-			"	}" + 
+//			"	}" + 
 			"}";
 
 		Query query = QueryFactory.create(queryString);
@@ -69,11 +69,11 @@ public class SPARQLSearchesV2 {
 			" PREFIX lime: <http://www.w3.org/ns/lemon/lime#>" + 
 			" SELECT DISTINCT ?lexicon " +
 			" WHERE { " +
-			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
-			"     {" + 
+//			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
+//			"     {" + 
 			"  ?lexicon a lime:Lexicon ; " + 
 			"     		lime:language \"" + lang + "\" ." +
-			"}"  +
+//			"}"  +
 			"}";
 
 		Query query = QueryFactory.create(queryString);
@@ -106,8 +106,8 @@ public class SPARQLSearchesV2 {
 			" PREFIX lime: <http://www.w3.org/ns/lemon/lime#>" + 
 		    " SELECT DISTINCT ?lex_entry_b " +
 			" WHERE { " +											
-			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
-			"    {" + 
+//			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
+//			"    {" + 
 			" <" + translationSetURI + "> vartrans:trans ?trans ." + 
 			" {?trans vartrans:source ?sense_a;" + 
 			"         vartrans:target ?sense_b}UNION" + 
@@ -117,7 +117,7 @@ public class SPARQLSearchesV2 {
 			" ?sense_b ontolex:isSenseOf  ?lex_entry_b . " +
 			" ?lexicon_b lime:entry ?lex_entry_b . " +
 			" MINUS {?lexicon_b lime:entry <" + sourceLexicalEntryURI +">} . " +
-			"}" +
+//			"}" +
 			"}";
 			
 			Query query = QueryFactory.create(queryString);
@@ -154,8 +154,8 @@ public class SPARQLSearchesV2 {
 			" PREFIX lime: <http://www.w3.org/ns/lemon/lime#>" + 
 			" SELECT DISTINCT ?lex_entry_b " +
 			" WHERE {" + 
-			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" +
-			"    {" +
+//			" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" +
+//			"    {" +
 			" ?form_a ontolex:writtenRep \"" + sourceLemma + "\"@" + sourceLanguage + "." +
 			" ?lex_entry_a ontolex:lexicalForm ?form_a . " +
 			" <" + translationSetURI + "> vartrans:trans ?trans ." + 
@@ -203,12 +203,12 @@ public class SPARQLSearchesV2 {
 				" PREFIX lime: <http://www.w3.org/ns/lemon/lime#>" + 
 			    " SELECT DISTINCT ?lex_entry " +			
 				" WHERE { " +
-				" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" +
-				"    {" +
+//				" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" +
+//				"    {" +
 				"  ?form ontolex:writtenRep \"" + lemma + "\"@" + sourceLanguage + "." +
 				"  ?lex_entry ontolex:lexicalForm ?form . " +
 				" <" + lexiconURI + "> lime:entry ?lex_entry ." +
-				"}" +
+//				"}" +
 				"}";	
 				
 			Query query = QueryFactory.create(queryString);

@@ -32,7 +32,7 @@ public class TranslationController {
 	
 	static OneTimeInverseConsultation_FromArrays otic = new OneTimeInverseConsultation_FromArrays();
 	
-	@Operation(description = "Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language")
+	@Operation(description = "Given a source, pivot, and target languages, returns a list of inferred TranslatablePair instances for the given entry in the source language. This assumes that Apertium RDF is stored in the following SPARQL endpoint: http://dbserver.acoli.cs.uni-frankfurt.de:5005/ds/query. For a different SPARQL endpoint, try the call 'translationPost' instead  (RECOMMENDED).")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "An array of TranslatablePair instances") })
 	@RequestMapping(path = "/translation/{source}-{pivot}-{target}/{entry}", method = RequestMethod.GET)
@@ -46,7 +46,7 @@ public class TranslationController {
 		return translatablePairs;
 	}
 		
-	@Operation(description = "Given a source, pivot, and target languages, returns an inferred dictionary in the form of a list of TranslatablePair instances")
+	@Operation(description = "Given a source, pivot, and target languages, returns an inferred dictionary in the form of a list of TranslatablePair instances. This assumes that Apertium RDF is stored in the following SPARQL endpoint: http://dbserver.acoli.cs.uni-frankfurt.de:5005/ds/query. For a different SPARQL endpoint, try the call 'translationPost' instead  (RECOMMENDED). ")
 	@ApiResponses(value = {
 	        @ApiResponse(responseCode = "200", description = "An array of TranslatablePair instances") })
 	@RequestMapping(path = "/translation/{source}-{pivot}-{target}", method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class TranslationController {
 		
 	}
 	
-	@Operation(description = "Stores in memory a given dictionary received as a single String (TIAD format)")
+	@Operation(description = "Stores in memory a given dictionary received as a single String (following the TIAD format, see https://tiad2020.unizar.es/task.html 'shortcut')")
 	@ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Dictionary upploaded in memory") })
 		@RequestMapping(path = "/uploadDict/{source}-{target}", method = RequestMethod.POST)

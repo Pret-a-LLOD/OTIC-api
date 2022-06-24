@@ -121,12 +121,12 @@ public class OneTimeInverseConsultationV2 {
 					" PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#> " +
 				    " SELECT DISTINCT ?lemma ?pos " +
 					" WHERE { " +
-					" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
-					" { " +
+//					" GRAPH <http://linguistic.linkeddata.es/id/apertium-lexinfo/>" + 
+//					" { " +
 					" <" + targetTranslation + "> ontolex:lexicalForm ?form ;" + 
 					"          lexinfo:partOfSpeech ?pos." +
 					"  ?form ontolex:writtenRep ?lemma ." +
-					"}" +
+//					"}" +
 					"}";
 				Query query = QueryFactory.create(queryString);
 				QueryExecution qe = QueryExecutionFactory.sparqlService(SPARQLSearchesV2.getSparqlEndpoint(), query);
