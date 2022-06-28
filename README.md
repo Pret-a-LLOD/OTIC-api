@@ -48,3 +48,20 @@ As an alternative, there is a Docker image at https://hub.docker.com/r/pretallod
 [2]: L. T. Lim, B. Ranaivo-Malançon, and E. K. Tang. "Low cost construction of a multilingual lexicon from bilingual lists". Polibits, 43:45–51, 2011. 
 
 [3]: Gracia, J., Fäth, C., Hartung, M., Ionov, M., Bosque-Gil, J., Veríssimo, S., ... & Orlikowski, M. (2020, November). Leveraging Linguistic Linked Data for Cross-Lingual Model Transfer in the Pharmaceutical Domain. In International Semantic Web Conference (pp. 499-514). Springer, Cham.
+
+## License
+
+OTIC-api was developed by the SID group (University of Zaragoza).
+
+>    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+>    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+>    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see [http://www.gnu.org/licenses/].
