@@ -10,6 +10,6 @@ RUN mvn -f /app/pom.xml clean package
 
 FROM openjdk:11-jre-slim
 COPY --from=build /app/target/otic-0.0.1-SNAPSHOT.jar /app/otic-0.0.1-SNAPSHOT.jar
-COPY ./src/main/resources/openapi.yml /openapi.yml
+COPY ./src/main/resources/openapi.yml /openapi.yaml
 
 CMD ["java","-jar","/app/otic-0.0.1-SNAPSHOT.jar"]
